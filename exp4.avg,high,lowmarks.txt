@@ -1,0 +1,91 @@
+#Average score of class
+def Average(roll):
+    b = len(roll)
+    count = 0
+    for i in range(0, b):
+        if roll[i] != 'A':
+            count = count + roll[i]
+    avg = count / b
+    print("The average of class is : " , avg)
+
+#Highest and Lowest
+def High_Low(roll):
+    high = 0
+    for i in roll:
+       if i != 'A' and i>high :
+           high=i
+    print("The highest marks are : " , high)
+
+    low = 30
+    for i in roll:
+        if i != 'A' and i<low :
+            low = i
+    print("The lowest marks are : ", low)
+
+#Absent Students
+def Absent(roll):
+    absent = 0
+    for i in roll:
+        if i == 'A':
+            absent = absent + 1
+    print("Number of absent students : " , absent)
+
+#Marks with highest frequency
+def Freq(roll):
+    b = len(roll)
+    freq = 0
+    for i in roll:
+        if i != 'A' and freq < roll.count(i):
+            freq = roll.count(i)
+            ele=i
+    print("The number with highest frequency is ", ele ,"with frequency of " , freq)
+            
+    
+
+
+
+
+students = int(input("Enter number of students : "))
+roll = []
+for i in range (0 , students):
+    a = 1
+    print("Enter the marks for roll number", i+1, "or mark 'A' for absent  ")
+    while a == 1:
+        std = input("Enter marks:  ")
+        if (std == 'A'):
+            roll.append(std)
+            print(roll)
+            break
+            
+        else:
+            b = int(std)
+            if 0<=b<= 30 :
+                roll.append(b)
+                break
+                
+            else :
+                print("Enter valid marks")
+                continue
+print(roll)
+
+while True:
+    print("1. To find average of class.")
+    print("2. To find highest and lowest marks of class.")
+    print("3. To find number of students absent. ")
+    print("4. To find marks with highest frequency.")
+    choice = int(input("Enter your choice : "))
+    if(choice == 1):
+        Average(roll)
+
+    elif(choice == 2):
+        High_Low(roll)
+
+    elif (choice == 3):
+        Absent(roll)
+
+    elif(choice == 4):
+        Freq(roll)
+
+    else :
+        print("Enter valid choice.")
+    

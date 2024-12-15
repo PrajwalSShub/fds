@@ -1,0 +1,53 @@
+def string_operations():
+    text = input("Enter a string: ")
+
+    while True:
+        print("\nChoose an operation:")
+        print("1. Display word with the longest length")
+        print("2. Determine the frequency of a particular character")
+        print("3. Check whether the string is a palindrome")
+        print("4. Display index of first appearance of a substring")
+        print("5. Count the occurrences of each word")
+        print("6. Exit")
+
+        choice = input("Enter your choice (1-6): ")
+
+        if choice == '1':
+            # Display word with the longest length
+            words = text.split()
+            longest_word = max(words, key=len)
+            print(f"Longest word: {longest_word}")
+        elif choice == '2':
+            # Determine the frequency of a particular character
+            char = input("Enter the character to find its frequency: ")
+            char_frequency = text.count(char)
+            print(f"Frequency of '{char}': {char_frequency}")
+        elif choice == '3':
+            # Check whether the string is a palindrome
+            is_palindrome = text == text[::-1]
+            print(f"Is the string a palindrome? {'Yes' if is_palindrome else 'No'}")
+        elif choice == '4':
+            # Display index of first appearance of a substring
+            substring = input("Enter the substring to find: ")
+            index = text.find(substring)
+            if index != -1:
+                print(f"Index of first appearance of '{substring}': {index}")
+            else:
+                print(f"Substring '{substring}' not found.")
+        elif choice == '5':
+            # Count the occurrences of each word
+            words = text.split()
+            word_count = {}
+            for word in words:
+                word_count[word] = word_count.get(word, 0) + 1
+            print("Occurrences of each word:")
+            for word, count in word_count.items():
+                print(f"{word}: {count}")
+        elif choice == '6':
+            print("Exiting program. Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+# Run the program
+string_operations()

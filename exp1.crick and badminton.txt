@@ -1,0 +1,133 @@
+# Intersection
+def intersection(list1, list2):
+    list3 = []
+    for val in list1:
+        if val in list2:
+            list3.append(val)
+    return list3
+
+# Union without duplicates
+def union(list1, list2):
+    return dup(list1 + list2)
+
+# Difference
+def difference(list1, list2):
+    list3 = []
+    for val in list1:
+        if val not in list2:
+            list3.append(val)
+    return list3
+
+# Remove duplicates
+def dup(list1):
+    list2 = []
+    for i in list1:
+        if i not in list2:
+            list2.append(i)
+    return list2
+
+# Intersection of Cricket and Badminton players
+def CB(list1, list2):
+    print("Cricket and Badminton players: ", intersection(list1, list2))
+
+# Union of Cricket and Badminton players
+def COB(list1, list2):
+    print("Cricket or Badminton players: ", union(list1, list2))
+
+# Difference of Cricket and Badminton players
+def DIF(list1, list2):
+    print("Cricket but not Badminton players: ", difference(list1, list2))
+
+# Cricket or Badminton but not both
+def BO(list1, list2):
+    only_cricket = difference(list1, list2)
+    only_badminton = difference(list2, list1)
+    print("Cricket or Badminton but not both: ", union(only_cricket, only_badminton))
+
+# Neither Cricket nor Badminton
+def NO(cricket, badminton, fb, sp):
+    total_sports = union(union(cricket, badminton), fb)
+    neither = difference(sp, total_sports)
+    print("Neither Cricket nor Badminton: ", neither)
+
+# Cricket and Football but not Badminton
+def CF(cricket, fb, badminton):
+    cricket_football = intersection(cricket, fb)
+    result = difference(cricket_football, badminton)
+    print("Cricket and Football but not Badminton: ", result)
+
+# Cricket, Badminton, and Football
+def CBF(cricket, badminton, fb):
+    all_three = intersection(intersection(cricket, badminton), fb)
+    print("Cricket, Badminton, and Football players: ", all_three)
+
+# Students who do not play any sport
+def NPS(sp):
+    print("Students who do not play any sport: ", sp)
+
+# List of every student
+def ES(cricket, badminton, fb, sp):
+    everyone = union(union(union(cricket, badminton), fb), sp)
+    print("List of every student: ", everyone)
+
+# Students who play all three sports
+def AL(cricket, badminton, fb):
+    all_three = intersection(intersection(cricket, badminton), fb)
+    print("Students who play all three sports: ", all_three)
+
+# Input student data
+def input_students(activity):
+    students = []
+    n = int(input(f"Enter number of students who play {activity}: "))
+    for _ in range(n):
+        name = input("Enter name: ")
+        students.append(name)
+    return dup(students)
+
+# Gather data
+cric = input_students("cricket")
+badminton = input_students("badminton")
+fb = input_students("football")
+sp = input_students("no sports")
+
+# Menu options
+while True:
+    print("\nMenu Options:")
+    print("1. Cricket and Badminton")
+    print("2. Cricket or Badminton")
+    print("3. Cricket but not Badminton")
+    print("4. Cricket or Badminton but not both")
+    print("5. Neither Cricket nor Badminton")
+    print("6. Cricket and Football but not Badminton")
+    print("7. Cricket, Badminton, and Football")
+    print("8. Students who do not play any sport")
+    print("9. List of every student")
+    print("10. Students who play all three sports")
+    print("11. Exit")
+
+    choice = int(input("Enter choice: "))
+    
+    if choice == 1:
+        CB(cric, badminton)
+    elif choice == 2:
+        COB(cric, badminton)
+    elif choice == 3:
+        DIF(cric, badminton)
+    elif choice == 4:
+        BO(cric, badminton)
+    elif choice == 5:
+        NO(cric, badminton, fb, sp)
+    elif choice == 6:
+        CF(cric, fb, badminton)
+    elif choice == 7:
+        CBF(cric, badminton, fb)
+    elif choice == 8:
+        NPS(sp)
+    elif choice == 9:
+        ES(cric, badminton, fb, sp)
+    elif choice == 10:
+        AL(cric, badminton, fb)
+    elif choice == 11:
+        break
+    else:
+        print("Invalid choice, try again.")

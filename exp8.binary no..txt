@@ -1,0 +1,167 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Definition for the doubly linked list node
+struct Node {
+    int data;      // Store binary digit (0 or 1)
+    Node* next;    // Pointer to the next node
+    Node* prev;    // Pointer to the previous node
+};
+
+// Function to insert a binary digit at the end of the doubly linked list
+void insert(Node*& head, int digit) {
+    Node* newNode = new Node();
+    newNode->data = digit;
+    newNode->next = nullptr;
+
+    if (head == nullptr) {
+        newNode->prev = nullptr;
+        head = newNode;
+    } else {
+        Node* temp = head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+        newNode->prev = temp;
+    }
+}
+
+// Function to display the binary number stored in the doubly linked list
+void display(Node* head) {
+    if (head == nullptr) {
+        cout << "The list is empty." << endl;
+        return;
+    }
+
+    Node* temp = head;
+    while (temp != nullptr) {
+        cout << temp->data;
+        temp = temp->next;
+    }
+    cout << endl;
+}
+
+// Function to compute the 1's complement of a binary number
+void onesComplement(Node* head) {
+    Node* temp = head;
+    while (temp != nullptr) {
+        temp->data = (temp->data == 0) ? 1 : 0;  // Flip 0 to 1 and 1 to 0
+        temp = temp->next;
+    }
+}
+
+// Function to compute the 2's complement of a binary number
+void twosComplement(Node* head) {
+    // Step 1: Compute the 1's complement
+    onesComplement(head);
+
+    // Step 2: Add 1 to the least significant bit
+    Node* temp = head;
+    bool carry = true;  // To simulate the addition of 1
+    while (temp != nullptr && carry) {
+        if (temp->data == 0) {
+            temp->data = 1;
+            carry = false;
+        } else {
+            temp->data = 0;
+        }
+        temp = temp->next;
+    }
+
+    // If carry is still true, insert 1 at the end
+    if (carry) {
+        insert(head, 1);
+    }
+}
+
+// Function to add two binary numbers stored in doubly linked lists
+Node* addBinary(Node* head1, Node* head2) {
+    Node* result = nullptr;
+    Node* temp1 = head1;
+    Node* temp2 = head2;
+    int carry = 0;
+
+    while (temp1 != nullptr || temp2 != nullptr) {
+        int bit1 = (temp1 != nullptr) ? temp1->data : 0;
+        int bit2 = (temp2 != nullptr) ? temp2->data : 0;
+        int sum = bit1 + bit2 + carry;
+
+        // Determine the sum and carry
+        carry = sum / 2;
+        insert(result, sum % 2);
+
+        // Move to the next node
+        if (temp1 != nullptr) temp1 = temp1->next;
+        if (temp2 != nullptr) temp2 = temp2->next;
+    }
+
+    // If there is any carry left, insert it at the end
+    if (carry) {
+        insert(result, carry);
+    }
+
+    return result;
+}
+
+// Main function
+int main() {
+    Node* binary1 = nullptr;
+    Node* binary2 = nullptr;
+
+    // Input binary numbers
+    cout << "Enter the first binary number (as a string of 0's and 1's): ";
+    string input;
+    cin >> input;
+    for (char c : input) {
+        insert(binary1, c - '0');  // Convert char to int and insert
+    }
+
+    cout << "Enter the second binary number (as a string of 0's and 1's): ";
+    cin >> input;
+    for (char c : input) {
+        insert(binary2, c - '0');  // Convert char to int and insert
+    }
+
+    // Display the binary numbers
+    cout << "First binary number: ";
+    display(binary1);
+
+    cout << "Second binary number: ";
+    display(binary2);
+
+    // a) Compute 1's complement of both binary numbers
+    cout << "\n1's complement of the first binary number: ";
+    onesComplement(binary1);
+    display(binary1);
+
+    // Reset the first binary number to its original form
+    binary1 = nullptr;
+    for (char c : input) {
+        insert(binary1, c - '0');
+    }
+
+    cout << "1's complement of the second binary number: ";
+    onesComplement(binary2);
+    display(binary2);
+
+    // b) Compute 2's complement of both binary numbers
+    cout << "\n2's complement of the first binary number: ";
+    twosComplement(binary1);
+    display(binary1);
+
+    // Reset the second binary number to its original form
+    binary2 = nullptr;
+    cout << "Enter the second binary number (as a string of 0's and 1's): ";
+    cin >> input;
+    for (char c : input) {
+        insert(binary2, c - '0');
+    }
+
+    cout << "2's complement of the second binary number: ";
+    twosComplement(binary2);
+    display(binary2);
+
+    return 0;
+}

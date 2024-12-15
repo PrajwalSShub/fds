@@ -1,0 +1,114 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <cctype>  // For isdigit() function
+#include <cstdlib> // For atoi() function
+
+using namespace std;
+
+// Function to check precedence of operators
+int precedence(char op) {
+    if (op == '+' || op == '-') 
+        return 1; // Lower precedence
+    if (op == '*' || op == '/') 
+        return 2; // Higher precedence
+    return 0;
+}
+
+// Function to convert infix to postfix
+string infixToPostfix(string infix) {
+    stack<char> s;
+    string postfix = "";
+
+    for (size_t i = 0; i < infix.size(); ++i) {
+        char c = infix[i];
+
+        // If character is a digit, form the complete number
+        if (isdigit(c)) {
+            while (i < infix.size() && isdigit(infix[i])) {
+                postfix += infix[i];
+                i++;
+            }
+            postfix += ' '; // Add a space to separate numbers
+            i--; // Step back to process the current character again
+        }
+        else if (c == '(') {
+            s.push(c);
+        }
+        else if (c == ')') {
+            while (!s.empty() && s.top() != '(') {
+                postfix += s.top();
+                postfix += ' ';
+                s.pop();
+            }
+            s.pop(); // Remove '('
+        }
+        else { // Operator
+            while (!s.empty() && precedence(s.top()) >= precedence(c)) {
+                postfix += s.top();
+                postfix += ' ';
+                s.pop();
+            }
+            s.push(c);
+        }
+    }
+
+    while (!s.empty()) {
+        postfix += s.top();
+        postfix += ' ';
+        s.pop();
+    }
+
+    return postfix;
+}
+
+
+// Function to evaluate a postfix expression
+int evaluatePostfix(string postfix) {
+    stack<int> s;
+    string number = "";
+
+    for (char c : postfix) {
+        if (isdigit(c)) {
+            number += c; // Accumulate digits
+        }
+        else if (c == ' ' && !number.empty()) {
+            s.push(atoi(number.c_str())); // Convert accumulated number to int and push
+            number = ""; // Reset number string
+        }
+        else if (c == '+' || c == '-' || c == '*' || c == '/') {
+            int b = s.top();
+            s.pop();
+            int a = s.top();
+            s.pop();
+
+            switch (c) {
+                case '+': s.push(a + b); break;
+                case '-': s.push(a - b); break;
+                case '*': s.push(a * b); break;
+                case '/': s.push(a / b); break;
+            }
+        }
+    }
+
+    return s.top(); // Final result
+}
+
+
+int main() {
+    string infix;
+    
+    // Input infix expression
+    cout << "Enter the infix expression (without spaces): ";
+    cin >> infix;
+
+    // Convert infix to postfix
+    string postfix = infixToPostfix(infix);
+    cout << "Postfix expression: " << postfix << endl;
+
+    // Evaluate the postfix expression
+    int result = evaluatePostfix(postfix);
+    cout << "Evaluation of postfix expression: " << result << endl;
+
+    return 0;
+}

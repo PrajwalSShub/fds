@@ -1,0 +1,48 @@
+# Initialize account balance
+account = 500  
+
+def process_transaction():
+    global account
+    
+    # Input transaction details
+    s = input("Enter transaction (D amount or W amount): ")
+    a = s.split(" ")
+    
+    # Check if transaction input is valid
+    if len(a) != 2 or not a[1].isdigit():
+        print("Invalid input format. Please enter in the format 'D amount' or 'W amount'.")
+        return
+    
+    transaction_type, amount = a[0], int(a[1])
+    print("Transaction details:", a)
+    
+    # Process deposit
+    if transaction_type == 'D':  
+        account += amount  
+        print(f"Rs {amount} deposited.")
+        print(f"Account balance is now {account}.")
+    
+    # Process withdrawal
+    elif transaction_type == 'W':  
+        if account < amount:  
+            print("Account balance is low. Withdrawal not allowed.")
+        else:
+            account -= amount  
+            print(f"Rs {amount} withdrawn.")
+            print(f"Account balance is now {account}.")
+    
+    # Handle invalid transaction type
+    else:
+        print("Invalid transaction type. Please enter 'D' for deposit or 'W' for withdrawal.")
+    
+    # Display total account balance
+    print(f"Total account balance is Rs {account}.")
+
+# Loop for repeated transactions
+while True:
+    process_transaction()
+    
+    continue_transaction = input("Do you want to enter another transaction? (yes/no): ")
+    if continue_transaction.lower() != 'yes':
+        print("Transaction process ended.")
+        break

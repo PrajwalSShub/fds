@@ -1,0 +1,51 @@
+# Function for Insertion Sort
+def insertion_sort(arr):
+    for i in range(1, len(arr)):
+        key = arr[i]  
+        j = i - 1
+        while j >= 0 and arr[j] > key:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key  # Insert key at its correct position
+
+# Function for Shell Sort
+def shell_sort(arr):
+    n = len(arr)
+    gap = n // 2 
+    while gap > 0:
+       
+        for i in range(gap, n):
+            temp = arr[i]
+            j = i
+        
+            while j >= gap and arr[j - gap] > temp:
+                arr[j] = arr[j - gap]
+                j -= gap
+            arr[j] = temp  # Insert temp at its correct position
+        gap //= 2
+        
+# Function to display the top 5 highest scores
+def display_top_5(arr):
+    # Sort the array in descending order and slice the top 5
+    top_scores = sorted(arr, reverse=True)[:5]
+    print("Top 5 scores (highest to lowest):", top_scores)
+
+# Input second-year percentages
+num_students = int(input("Enter number of students: "))
+percentages = []
+
+for i in range(num_students):
+    percentage = float(input(f"Enter second-year percentage for student {i + 1}: "))
+    percentages.append(percentage)
+
+# Sorting using Insertion Sort 
+insertion_sorted = percentages[:]  
+insertion_sort(insertion_sorted) 
+print("\nSorted using Insertion Sort:", insertion_sorted)  # Print sorted list
+display_top_5(insertion_sorted)  # Display top 5 highest scores
+
+# Sorting using Shell Sort 
+shell_sorted = percentages[:]  
+shell_sort(shell_sorted)  
+print("\nSorted using Shell Sort:", shell_sorted)  # Print sorted list
+display_top_5(shell_sorted)  # Display top 5 highest scores
